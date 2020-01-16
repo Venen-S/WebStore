@@ -1,0 +1,35 @@
+﻿@model WebStore.Models.MedicalScience
+@{
+    ViewData["Title"] = "MedDetails";
+}
+
+<h1>Подробности</h1>
+
+@Html.ActionLink("Назад", "MedIndex")
+<table>
+    <tr>
+        <td>Id</td>
+        <td>@Model.id</td>
+    </tr>
+    <tr>
+        <td>Наука</td>
+        <td>@Model.Science</td>
+    </tr>
+    <tr>
+        <td>Сложность изучения науки</td>
+        <td>@Model.Difficulty</td>
+    </tr>
+    <tr>
+        <td>Система</td>
+        <td>@Model.System</td>
+    </tr>
+    <tr>
+        <td>Смертность в науке</td>
+        <td>@Model.Mortality</td>
+    </tr>
+    <tr>
+        <td>Оплата труда специалистов</td>
+        <td>@Model.Payment</td>
+    </tr>
+</table>
+

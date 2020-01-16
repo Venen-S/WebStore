@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WebStore.Models.MedicalScience>
+@{
+    ViewData["Title"] = "MedIndex";
+}
+
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Science</td>
+            <td>@item.Difficulty</td>
+            <td>@item.System</td>
+            <td>@item.Mortality</td>
+            <td>@item.Payment</td>
+            <td>@Html.ActionLink("Подробнее", "MedDetails", new { id = item.id })</td>
+        </tr>
+    }
+</table>
+
