@@ -7,7 +7,7 @@ namespace WebStore.Models
 {
     public class EmployeeView
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string SurName { get; set; }
         public string Patronymic { get; set; }
