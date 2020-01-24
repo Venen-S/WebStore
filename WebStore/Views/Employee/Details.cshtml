@@ -1,15 +1,17 @@
-﻿@model WebStore.Models.EmployeeView
+﻿@model EmployeeView
+
 @{
     ViewData["Title"] = "Details";
 }
 
 <h1>Details</h1>
+@Html.DisplayForModel()
 
 @Html.ActionLink("Назад к списку", "Index")
-<table>
+<table class="table table-bordered">
     <tr>
         <td>Id</td>
-        <td>@Model.id</td>
+        <td>@Model.Id</td>
     </tr>
     <tr>
         <td>Фамилия</td>

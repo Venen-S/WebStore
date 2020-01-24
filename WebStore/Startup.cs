@@ -29,6 +29,8 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             var helloMsg = _configuration["CustomHelloWorld"];
 
             app.UseRouting();
