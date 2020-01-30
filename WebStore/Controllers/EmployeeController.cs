@@ -38,7 +38,7 @@ namespace WebStore.Controllers
         [Route("edit/{id?}")]
         public IActionResult Edit(int? id)
         {
-            EmployeeView model;
+            EmployeeViewModel model;
             if(id.HasValue)
             {
                 model = _employeesData.GetById(id.Value);
@@ -47,14 +47,14 @@ namespace WebStore.Controllers
             }
             else
             {
-                model = new EmployeeView();
+                model = new EmployeeViewModel();
             }
             return View(model);
         }
 
         [HttpPost]
         [Route("edit/{id?}")]
-        public IActionResult Edit(EmployeeView model)
+        public IActionResult Edit(EmployeeViewModel model)
         {
             if (model.Age < 18 && model.Age > 60)
             {

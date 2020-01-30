@@ -9,12 +9,12 @@ namespace WebStore.Infrastructure.Implementation
 {
     public class InMemoryEmployeesData: IEmployeesData
     {
-        private readonly List<EmployeeView> _employees;
+        private readonly List<EmployeeViewModel> _employees;
         public InMemoryEmployeesData()
         {
-            _employees = new List<EmployeeView>(3)
+            _employees = new List<EmployeeViewModel>(3)
             {
-                new EmployeeView()
+                new EmployeeViewModel()
                 {
                     Id=1,
                     FirstName="Уася",
@@ -23,7 +23,7 @@ namespace WebStore.Infrastructure.Implementation
                     Age=22,
                     Position="Директор",
                 },
-                new EmployeeView()
+                new EmployeeViewModel()
                 {
                     Id=2,
                     FirstName="Ваня",
@@ -32,7 +32,7 @@ namespace WebStore.Infrastructure.Implementation
                     Age=30,
                     Position="Программист"
                 },
-                new EmployeeView()
+                new EmployeeViewModel()
                 {
                     Id=3,
                     FirstName="Вини",
@@ -44,12 +44,12 @@ namespace WebStore.Infrastructure.Implementation
             };
         }
 
-        public IEnumerable<EmployeeView> GetAll()
+        public IEnumerable<EmployeeViewModel> GetAll()
         {
             return _employees;
         }
 
-        public EmployeeView GetById(int id)
+        public EmployeeViewModel GetById(int id)
         {
             return _employees.FirstOrDefault(e => e.Id.Equals(id));
         }
@@ -57,7 +57,7 @@ namespace WebStore.Infrastructure.Implementation
         public void Commit()
         { }
 
-        public void AddNew(EmployeeView model)
+        public void AddNew(EmployeeViewModel model)
         {
             model.Id = _employees.Max(e => e.Id) + 1;
             _employees.Add(model);

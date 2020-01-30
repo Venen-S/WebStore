@@ -20,21 +20,21 @@
     <![endif]-->
 </head>
 <body>
-    @await Html.PartialAsync("_Header")
+@await Html.PartialAsync("_Header")
 
-    <div class="container">
-        @RenderBody()
-    </div>
+<div class="container">
+    @RenderBody()
+</div>
 
-    @await Html.PartialAsync("_Footer")
+@await Html.PartialAsync("_Footer")
 
-    <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/jquery.scrollUp.min.js"></script>
-    <script src="~/js/price-range.js"></script>
-    <script src="~/js/jquery.prettyPhoto.js"></script>
-    <script src="~/js/main.js"></script>
-    <!--Секция для отображения кастомных скриптов, если понадобятся-->
-    @RenderSection("scripts", false)
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.scrollUp.min.js"></script>
+<script src="~/js/price-range.js"></script>
+<script src="~/js/jquery.prettyPhoto.js"></script>
+<script src="~/js/main.js"></script>
+<!--Секция для отображения кастомных скриптов, если понадобятся-->
+@RenderSection("scripts", false)
 </body>
 </html>

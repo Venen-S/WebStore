@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,8 +32,11 @@ namespace WebStore
 
             app.UseStaticFiles();
             app.UseWelcomePage("/welcom");
+            app.Map("/index", CustomIndexHandler);
+            UseMiddlewareSample(app);
 
             var helloMsg = _configuration["CustomHelloWorld"];
+            var logLevel = _configuration["Logging:LogLevel:Microsoft"];
 
             app.UseRouting();
 
@@ -41,6 +45,39 @@ namespace WebStore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.Map("/hello", async context =>
+                {
+                    await context.Response.WriteAsync(helloMsg);
+                });
+            });
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Даже не знаю, что Вам сказать...");
+            });
+        }
+        private void CustomIndexHandler(IApplicationBuilder app)
+        {
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("Hello from custom /Index handler");
+            });
+        }
+
+        private void UseMiddlewareSample(IApplicationBuilder app)
+        {
+            app.Use(async (context, next) =>
+            {
+                bool isError = false;
+                // ...
+                if (isError)
+                {
+                    await context.Response
+                        .WriteAsync("Error occured. You're in custom pipeline module...");
+                }
+                else
+                {
+                    await next.Invoke();
+                }
             });
         }
     }

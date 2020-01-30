@@ -18,6 +18,7 @@ namespace WebStore.Controllers
             _productService = productService;
         }
 
+
         public IActionResult Shop(int? categoryId, int? brandId)
         {
             // получаем список отфильтрованных продуктов
