@@ -1,26 +1,23 @@
-﻿using WebStore.Domain.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using WebStore.Domain.Entities.Base;
 using WebStore.Domain.Entities.Base.Interfaces;
 
 namespace WebStore.Domain.Entities
 {
-    public class Product:NamedEntity,IOrderedEntity
+    [Table("Products")]
+    public class Product : NamedEntity, IOrderedEntity
     {
         public int Order { get; set; }
-        /// <summary>
-        /// Секция, к которой принадлежит товар
-        /// </summary>
         public int SectionId { get; set; }
-        /// <summary>
-        /// Бренд товара
-        /// </summary>
         public int? BrandId { get; set; }
-        /// <summary>
-        /// Ссылка на картинку
-        /// </summary>
         public string ImageUrl { get; set; }
-        /// <summary>
-        /// Цена
-        /// </summary>
         public decimal Price { get; set; }
+        public string SerialNumber { get; set; }
+
+        [ForeignKey("SectionId")] // не обязательно в целом
+        public virtual Section Section { get; set; }
+
+        [ForeignKey("BrandId")]
+        public virtual Brand Brand { get; set; }
     }
 }
