@@ -70,7 +70,7 @@ namespace WebStore
             app.Map("/index", CustomIndexHandler);
 
 
-            UseMiddlewareSample(app);
+            //UseMiddlewareSample(app);
 
             var helloMessage = _configuration["CustomHelloWorld"];
             var logLevel = _configuration["Logging:LogLevel:Microsoft"];
@@ -98,23 +98,23 @@ namespace WebStore
             });
         }
 
-        private void UseMiddlewareSample(IApplicationBuilder app)
-        {
-            app.Use(async (context, next) =>
-            {
-                bool isError = false;
-                // ...
-                if (isError)
-                {
-                    await context.Response
-                        .WriteAsync("Error occured. You're in custom pipeline module...");
-                }
-                else
-                {
-                    await next.Invoke();
-                }
-            });
-        }
+        //private void UseMiddlewareSample(IApplicationBuilder app)
+        //{
+        //    app.Use(async (context, next) =>
+        //    {
+        //        bool isError = false;
+        //        // ...
+        //        if (isError)
+        //        {
+        //            await context.Response
+        //                .WriteAsync("Error occured. You're in custom pipeline module...");
+        //        }
+        //        else
+        //        {
+        //            await next.Invoke();
+        //        }
+        //    });
+        //}
 
         private void CustomIndexHandler(IApplicationBuilder app)
         {
