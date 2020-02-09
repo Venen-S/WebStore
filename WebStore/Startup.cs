@@ -52,8 +52,8 @@ namespace WebStore
                 options.User.RequireUniqueEmail = true;
             }
             );
-
-            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ICartService, CookieCartService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
