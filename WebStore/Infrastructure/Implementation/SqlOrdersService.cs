@@ -10,7 +10,7 @@ using WebStore.Models;
 
 namespace WebStore.Infrastructure.Implementation
 {
-    public class SqlOrdersService:IOrdersService
+    public class SqlOrdersService : IOrdersService
     {
         private readonly WebStoreContext _context;
         private readonly UserManager<User> _userManager;

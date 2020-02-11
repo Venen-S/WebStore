@@ -23,17 +23,20 @@ namespace WebStore
             _configuration = configuration;
         }
 
+        
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddMvc();
 
             services.AddDbContext<WebStoreContext>(options => options
                 .UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddScoped<IProductData, SqlProductService>();
-
             services.AddScoped<IOrdersService, SqlOrdersService>();
+            
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<WebStoreContext>()
@@ -41,6 +44,7 @@ namespace WebStore
 
             services.Configure<IdentityOptions>(options =>
             {
+                // Password settings
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 5;
                 options.Password.RequireLowercase = false;
@@ -48,16 +52,22 @@ namespace WebStore
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
 
+                // Lockout settings
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
                 options.User.RequireUniqueEmail = true;
             }
             );
+
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICartService, CookieCartService>();
         }
 
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -71,8 +81,7 @@ namespace WebStore
 
             app.Map("/index", CustomIndexHandler);
 
-
-            //UseMiddlewareSample(app);
+           
 
             var helloMessage = _configuration["CustomHelloWorld"];
             var logLevel = _configuration["Logging:LogLevel:Microsoft"];
@@ -86,11 +95,13 @@ namespace WebStore
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
 
                 endpoints.Map("/hello", async context =>
                 {
@@ -100,7 +111,25 @@ namespace WebStore
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Даже не знаю, что Вам сказать...");
+                await context.Response.WriteAsync("No handler for request..");
+            });
+        }
+
+        private void UseMiddlewareSample(IApplicationBuilder app)
+        {
+            app.Use(async (context, next) =>
+            {
+                bool isError = false;
+                // ...
+                if (isError)
+                {
+                    await context.Response
+                        .WriteAsync("Error occured. You're in custom pipeline module...");
+                }
+                else
+                {
+                    await next.Invoke();
+                }
             });
         }
 
