@@ -3,77 +3,63 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebStore.Infrastructure.Interface;
-using WebStore.Models;
+using WebStore.Domain.Entities.Orders;
+using WebStore.Infrastructure.Interfaces;
+using WebStore.ViewModels;
+using WebStore.ViewModels.Orders;
 
 namespace WebStore.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ICartService _cartService;
-        private readonly IOrdersService _ordersService;
+        private readonly ICartService _CartService;
 
-        public CartController(ICartService cartService, IOrdersService ordersService)
+        public CartController(ICartService CartService) => _CartService = CartService;
+
+        public IActionResult Details() => View(new CartOrderViewModel
         {
-            _cartService = cartService;
-            _ordersService = ordersService;
-        }
+            CartViewModel = _CartService.TransformFromCart(),
+            OrderViewModel = new OrderViewModel()
+        });
 
-        public IActionResult Details()
+        public IActionResult AddToCart(int id)
         {
-            var model = new OrderDetailsViewModel
-            {
-                CartViewModel = _cartService.TransformCart(),
-                OrderViewModel = new OrderViewModel()
-            };
-
-            return View("Details", model);
+            _CartService.AddToCart(id);
+            return RedirectToAction(nameof(Details));
         }
 
         public IActionResult DecrementFromCart(int id)
         {
-            _cartService.DecrementFromCart(id);
-            return RedirectToAction("Details");
+            _CartService.DecrementFromCart(id);
+            return RedirectToAction(nameof(Details));
         }
 
         public IActionResult RemoveFromCart(int id)
         {
-            _cartService.RemoveFromCart(id);
-            return RedirectToAction("Details");
+            _CartService.RemoveFromCart(id);
+            return RedirectToAction(nameof(Details));
         }
 
         public IActionResult RemoveAll()
         {
-            _cartService.RemoveAll();
-            return RedirectToAction("Details");
+            _CartService.RemoveAll();
+            return RedirectToAction(nameof(Details));
         }
 
-        public IActionResult AddToCart(int id, string returnUrl)
+        public async Task<IActionResult> CheckOut(OrderViewModel Model, [FromServices] IOrderService OrderService)
         {
-            _cartService.AddToCart(id);
-            return Redirect(returnUrl);
-        }
+            if (!ModelState.IsValid)
+                return View(nameof(Details), new CartOrderViewModel
+                {
+                    CartViewModel = _CartService.TransformFromCart(),
+                    OrderViewModel = Model
+                });
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult CheckOut(OrderViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var orderResult = _ordersService
-                    .CreateOrder(model, _cartService.TransformCart(), User.Identity.Name);
+            var order = await OrderService.CreateOrderAsync(User.Identity.Name, _CartService.TransformFromCart(), Model);
 
-                _cartService.RemoveAll();
+            _CartService.RemoveAll();
 
-                return RedirectToAction("OrderConfirmed", new { id = orderResult.Id });
-            }
-
-            var detailsModel = new OrderDetailsViewModel()
-            {
-                CartViewModel = _cartService.TransformCart(),
-                OrderViewModel = model
-            };
-
-            return View("Details", detailsModel);
+            return RedirectToAction(nameof(OrderConfirmed), new { id = order.Id });
         }
 
         public IActionResult OrderConfirmed(int id)

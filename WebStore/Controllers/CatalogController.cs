@@ -1,63 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using WebStore.Domain.Filters;
-using WebStore.Infrastructure.Interface;
-using WebStore.Models;
+using WebStore.Domain.Entities;
+using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Mapping;
+using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
     public class CatalogController : Controller
     {
-        private readonly IProductData _productService;
+        private readonly IProductData _ProductData;
 
-        public CatalogController(IProductData productService)
+        public CatalogController(IProductData ProductData) => _ProductData = ProductData;
+
+        public IActionResult Shop(int? SectionId, int? BrandId)
         {
-            _productService = productService;
-        }
-
-
-        public IActionResult Shop(int? sectionId, int? brandId)
-        {
-            var products = _productService.GetProducts(new ProductFilter
+            var filter = new ProductFilter
             {
-                BrandId
-                    = brandId,
-                SectionId = sectionId
-            });
-            var model = new CatalogViewModel()
-            {
-                BrandId = brandId,
-                Section = sectionId,
-                Products = products.Select(p => new ProductViewModel()
-                {
-                    Id = p.Id,
-                    ImageUrl = p.ImageUrl,
-                    Name = p.Name,
-                    Order = p.Order,
-                    Price = p.Price,
-                    BrandName = p.Brand?.Name ?? string.Empty
-                }).OrderBy(p => p.Order).ToList()
+                SectionId = SectionId,
+                BrandId = BrandId
             };
-            return View(model);
+            var products = _ProductData.GetProducts(filter);
+
+            return View(new CatalogViewModel
+            {
+                SectionId = SectionId,
+                BrandId = BrandId,
+                Products = products.Select(ProductMapping.ToView).OrderBy(p => p.Order)
+            });
         }
 
-        public IActionResult ProductDetails(int id)
+        public IActionResult Details(int id)
         {
-            var product = _productService.GetProductById(id);
-            if (product == null)
+            var product = _ProductData.GetProductById(id);
+
+            if (product is null)
                 return NotFound();
-            return View(new ProductViewModel
-            {
-                Id = product.Id,
-                ImageUrl = product.ImageUrl,
-                Name = product.Name,
-                Order = product.Order,
-                Price = product.Price,
-                BrandName = product.Brand?.Name ?? string.Empty
-            });
+
+            return View(product.ToView());
         }
     }
 }

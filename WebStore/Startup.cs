@@ -7,84 +7,82 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebStore.DAL;
-using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Implementation;
-using WebStore.Infrastructure.Interface;
+using WebStore.DAL.Context;
+using WebStore.Data;
+using WebStore.Domain.Entities.Identity;
+using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Services.InCookies;
+using WebStore.Infrastructure.Services.InMemory;
+using WebStore.Infrastructure.Services.InSQL;
 
 namespace WebStore
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
+        private IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public Startup(IConfiguration Configuration) => this.Configuration = Configuration;
 
-        
         public void ConfigureServices(IServiceCollection services)
         {
-            
-            services.AddMvc();
+            services.AddDbContext<WebStoreDB>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<WebStoreDBInitializer>();
 
-            services.AddDbContext<WebStoreContext>(options => options
-                .UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<User, Role>()
+               .AddEntityFrameworkStores<WebStoreDB>()
+               .AddDefaultTokenProviders();
 
-            
-            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-            services.AddScoped<IProductData, SqlProductService>();
-            services.AddScoped<IOrdersService, SqlOrdersService>();
-            
-
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<WebStoreContext>()
-                .AddDefaultTokenProviders();
-
-            services.Configure<IdentityOptions>(options =>
+            services.Configure<IdentityOptions>(opt =>
             {
-                // Password settings
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 5;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
+                opt.Password.RequiredLength = 3;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = true;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequiredUniqueChars = 3;
 
-                // Lockout settings
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                options.Lockout.AllowedForNewUsers = true;
+                //opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCD...123457890";
+                opt.User.RequireUniqueEmail = false;
 
-                // User settings
-                options.User.RequireUniqueEmail = true;
-            }
-            );
+                opt.Lockout.AllowedForNewUsers = true;
+                opt.Lockout.MaxFailedAccessAttempts = 10;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            });
 
-            
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICartService, CookieCartService>();
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.Cookie.Name = "WebStore";
+                opt.Cookie.HttpOnly = true;
+                opt.ExpireTimeSpan = TimeSpan.FromDays(10);
+
+                opt.LoginPath = "/Account/Login";
+                opt.LogoutPath = "/Account/Logout";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
+
+                opt.SlidingExpiration = true;
+            });
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+            services.AddScoped<IProductData, SqlProductData>();
+            services.AddScoped<ICartService, CookiesCartService>();
+            services.AddScoped<IOrderService, SqlOrderService>();
         }
 
-        
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDBInitializer db)
         {
+            db.Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseStaticFiles();
-
-            app.UseWelcomePage("/welcome");
-
-            app.Map("/index", CustomIndexHandler);
-
-           
-
-            var helloMessage = _configuration["CustomHelloWorld"];
-            var logLevel = _configuration["Logging:LogLevel:Microsoft"];
+            app.UseDefaultFiles();
 
             app.UseRouting();
 
@@ -93,6 +91,11 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/greetings", async context =>
+                {
+                    await context.Response.WriteAsync(Configuration["CustomGreetings"]);
+                });
+
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
@@ -100,44 +103,7 @@ namespace WebStore
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
-                );
-
-                endpoints.Map("/hello", async context =>
-                {
-                    await context.Response.WriteAsync(helloMessage);
-                });
-            });
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("No handler for request..");
-            });
-        }
-
-        private void UseMiddlewareSample(IApplicationBuilder app)
-        {
-            app.Use(async (context, next) =>
-            {
-                bool isError = false;
-                // ...
-                if (isError)
-                {
-                    await context.Response
-                        .WriteAsync("Error occured. You're in custom pipeline module...");
-                }
-                else
-                {
-                    await next.Invoke();
-                }
-            });
-        }
-
-        private void CustomIndexHandler(IApplicationBuilder app)
-        {
-            app.Run(async context =>
-            {
-                await context.Response.WriteAsync("Hello from custom /Index handler");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
