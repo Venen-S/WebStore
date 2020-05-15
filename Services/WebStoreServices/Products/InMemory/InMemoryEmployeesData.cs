@@ -1,4 +1,4 @@
-﻿namespace WebStore.Infrastructure.Services.InMemory
+﻿namespace WebStoreServices.Products.InMemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {

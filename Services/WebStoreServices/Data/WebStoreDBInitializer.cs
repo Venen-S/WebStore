@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using WebStore.DAL.Context;
-using WebStore.Domain.Entities.Identity;
 
-namespace WebStore.Data
+namespace WebStoreServices.Data
 {
     public class WebStoreDBInitializer
     {

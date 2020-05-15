@@ -1,4 +1,8 @@
-﻿namespace WebStore.Infrastructure.Services.InMemory
+﻿using System.Collections.Generic;
+using WebStore.Interfaces.Services;
+using WebStoreServices.Data;
+
+namespace WebStoreServices.Products.InMemory
 {
     public class InMemoryProductData : IProductData
     {

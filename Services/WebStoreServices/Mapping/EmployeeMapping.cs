@@ -1,4 +1,4 @@
-﻿namespace WebStore.Infrastructure.Mapping
+﻿namespace WebStoreServices.Mapping
 {
     public static class EmployeeMapping
     {
