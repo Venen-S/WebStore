@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
 using WebStoreServices.Data;
 

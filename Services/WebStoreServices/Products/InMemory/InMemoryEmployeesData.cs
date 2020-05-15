@@ -1,4 +1,11 @@
-﻿namespace WebStoreServices.Products.InMemory
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using WebStore.Domain.Models;
+using WebStore.Interfaces.Services;
+using WebStoreServices.Data;
+
+namespace WebStoreServices.Products.InMemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {

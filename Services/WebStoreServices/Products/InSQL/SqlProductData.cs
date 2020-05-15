@@ -1,4 +1,11 @@
-﻿namespace WebStoreServices.Products.InSQL
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using WebStore.DAL.Context;
+using WebStore.Domain.Entities;
+using WebStore.Interfaces.Services;
+
+namespace WebStoreServices.Products.InSQL
 {
     public class SqlProductData : IProductData
     {

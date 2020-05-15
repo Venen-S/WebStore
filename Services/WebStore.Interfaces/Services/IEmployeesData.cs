@@ -1,4 +1,7 @@
-﻿namespace WebStore.Interfaces.Services
+﻿using System.Collections.Generic;
+using WebStore.Domain.Models;
+
+namespace WebStore.Interfaces.Services
 {
     public interface IEmployeesData
     {

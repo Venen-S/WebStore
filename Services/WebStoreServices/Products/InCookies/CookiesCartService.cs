@@ -1,4 +1,14 @@
-﻿namespace WebStoreServices.Products.InCookies
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using WebStore.Domain.Entities;
+using WebStore.Domain.Models;
+using WebStore.Domain.ViewModels;
+using WebStore.Interfaces.Services;
+using WebStoreServices.Mapping;
+
+namespace WebStoreServices.Products.InCookies
 {
     public class CookiesCartService : ICartService
     {

@@ -1,4 +1,8 @@
-﻿namespace WebStoreServices.Data
+﻿using System.Collections.Generic;
+using WebStore.Domain.Entities;
+using WebStore.Domain.Models;
+
+namespace WebStoreServices.Data
 {
     public class TestData
     {

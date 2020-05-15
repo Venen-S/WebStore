@@ -1,4 +1,17 @@
-﻿namespace WebStoreServices.Products.InSQL
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using WebStore.DAL.Context;
+using WebStore.Domain.Entities.Identity;
+using WebStore.Domain.Entities.Orders;
+using WebStore.Domain.ViewModels;
+using WebStore.Domain.ViewModels.Orders;
+using WebStore.Interfaces.Services;
+
+namespace WebStoreServices.Products.InSQL
 {
     public class SqlOrderService : IOrderService
     {

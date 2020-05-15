@@ -1,4 +1,7 @@
-﻿namespace WebStore.Interfaces.Services
+﻿using System.Collections.Generic;
+using WebStore.Domain.Entities;
+
+namespace WebStore.Interfaces.Services
 {
     /// <summary>Каталог товаров</summary>
     public interface IProductData
