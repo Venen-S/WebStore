@@ -18,9 +18,9 @@ namespace WebStore.Clients.Values
 
         public IEnumerable<string> Get()
         {
-            var response = _Client.GetAsync(_ServiceAddress).Result;
-            if (response.IsSuccessStatusCode)
-                return response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+            var respons = _Client.GetAsync(_ServiceAddress).Result;
+            if (respons.IsSuccessStatusCode)
+                return respons.Content.ReadAsAsync<IEnumerable<string>>().Result;
             return Enumerable.Empty<string>();
         }
 
@@ -34,13 +34,13 @@ namespace WebStore.Clients.Values
 
         public Uri Post(string value)
         {
-            var respinse = _Client.PostAsJsonAsync($"{_ServiceAddress}/post", value).Result;
-            return respinse.EnsureSuccessStatusCode().Headers.Location;
+            var response = _Client.PostAsJsonAsync($"{_ServiceAddress}/post", value).Result;
+            return response.EnsureSuccessStatusCode().Headers.Location;
         }
 
         public HttpStatusCode Update(int id, string value)
         {
-            var response = _Client.PostAsJsonAsync($"{_ServiceAddress}/put/{id}", value).Result;
+            var response = _Client.PutAsJsonAsync($"{_ServiceAddress}/put/{id}", value).Result;
             return response.EnsureSuccessStatusCode().StatusCode;
         }
 
