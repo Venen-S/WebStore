@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStoreServices.Data;
 using WebStoreServices.Products.InCookies;
