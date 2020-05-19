@@ -19,7 +19,7 @@ namespace WebStoreServices.Mapping
         };
 
         public static IEnumerable<ProductViewModel> ToView(this IEnumerable<Product> p) => p.Select(ToView);
-        public static ProductDTO ToDto(this Product Product) => Product is null ? null : new ProductDTO
+        public static ProductDTO ToDTO(this Product Product) => Product is null ? null : new ProductDTO
         {
             Id=Product.Id,
             Name=Product.Name,
@@ -44,5 +44,8 @@ namespace WebStoreServices.Mapping
 
         public static IEnumerable<Product> FromDTO(this IEnumerable<ProductDTO> Products) =>
             Products?.Select(FromDTO);
+
+        public static IEnumerable<ProductDTO> ToDTO(this IEnumerable<Product> Products) =>
+            Products?.Select(ToDTO);
     }
 }
