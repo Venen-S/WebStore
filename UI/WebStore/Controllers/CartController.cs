@@ -64,7 +64,7 @@ namespace WebStore.Controllers
                     })
                     .ToList()
             };
-            var order = await OrderService.CreateOrderAsync(User.Identity.Name, order_model)
+            var order = await OrderService.CreateOrderAsync(User.Identity.Name, order_model);
 
             _CartService.RemoveAll();
 
