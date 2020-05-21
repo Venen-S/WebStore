@@ -17,7 +17,6 @@ using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStoreServices.Data;
 using WebStoreServices.Products.InCookies;
-using WebStoreServices.Products.InSQL;
 
 namespace WebStore
 {
