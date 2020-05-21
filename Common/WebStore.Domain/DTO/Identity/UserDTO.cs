@@ -16,7 +16,7 @@ namespace WebStore.Domain.DTO.Identity
 
     public class PasswordHashDTO : UserDTO
     {
-        public string DTO { get; set; }
+        public string Hash { get; set; }
     }
 
     public class SetLockoutDTO : UserDTO

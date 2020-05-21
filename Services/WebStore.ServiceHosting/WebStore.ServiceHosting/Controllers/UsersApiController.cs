@@ -1,13 +1,16 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+ using System.Security.Claims;
+ using System.Threading.Tasks;
+ using Microsoft.AspNetCore.Identity;
  using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
  using Microsoft.AspNetCore.Mvc;
  using Microsoft.EntityFrameworkCore;
  using Microsoft.Extensions.Logging;
  using WebStore.DAL.Context;
  using WebStore.Domain;
+ using WebStore.Domain.DTO.Identity;
  using WebStore.Domain.Entities.Identity;
 
  namespace WebStore.ServiceHosting.Controllers
