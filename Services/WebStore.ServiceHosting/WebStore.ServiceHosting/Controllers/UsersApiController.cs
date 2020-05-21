@@ -5,6 +5,7 @@ using System.Threading.Tasks;
  using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
  using Microsoft.AspNetCore.Mvc;
  using Microsoft.EntityFrameworkCore;
+ using Microsoft.Extensions.Logging;
  using WebStore.DAL.Context;
  using WebStore.Domain;
  using WebStore.Domain.Entities.Identity;
@@ -15,10 +16,12 @@ using System.Threading.Tasks;
     [ApiController]
     public class UsersApiController : ControllerBase
     {
+        private ILogger<UsersApiController> _Logger { get; }
         private readonly UserStore<User, Role, WebStoreDB> _UserStore;
 
-        public UsersApiController(WebStoreDB db)
+        public UsersApiController(WebStoreDB db,ILogger<UsersApiController> Logger)
         {
+            _Logger = Logger;
             _UserStore=new UserStore<User, Role, WebStoreDB>(db);
         }
 

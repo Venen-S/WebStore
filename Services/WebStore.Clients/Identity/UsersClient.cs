@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WebStore.Clients.Base;
 using WebStore.Domain;
 using WebStore.Domain.DTO.Identity;
@@ -16,9 +17,12 @@ namespace WebStore.Clients.Identity
 {
     public class UsersClient:BaseClient,IUserClient
     {
-        public UsersClient(IConfiguration Configuration, string ServiceAddress) : 
+        private ILogger<UsersClient> _Logger;
+
+        public UsersClient(IConfiguration Configuration, ILogger<UsersClient> Logger) : 
             base(Configuration, WebAPI.Identity.Users)
         {
+            _Logger = Logger;
         }
         #region Implementation of IUserStore<User>
 
