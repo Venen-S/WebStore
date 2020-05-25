@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
@@ -62,6 +63,11 @@ namespace WebStore.ServiceHosting
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllers();
+
+            services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new OpenApiInfo {Title = "WebStore.API", Version = "v1"});
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +80,13 @@ namespace WebStore.ServiceHosting
             }
 
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "WebStore.API");
+                opt.RoutePrefix = string.Empty;
+            });
 
             app.UseAuthorization();
 
