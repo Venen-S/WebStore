@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace WebStore.Clients.Base
 {
-    public abstract class BaseClient:IDisposable
+    public abstract class BaseClient : IDisposable
     {
         protected readonly string _ServiceAddress;
         protected readonly HttpClient _Client;
@@ -30,9 +30,10 @@ namespace WebStore.Clients.Base
         }
 
         protected T Get<T>(string url) /*where T : new()*/ => GetAsync<T>(url).Result;
-        protected async Task<T> GetAsync<T>(string url, CancellationToken Cancel=default) /*where T:new()*/
+
+        protected async Task<T> GetAsync<T>(string url, CancellationToken Cancel = default)// where T : new()
         {
-            var response = await _Client.GetAsync(url,Cancel);
+            var response = await _Client.GetAsync(url, Cancel);
             return await response.EnsureSuccessStatusCode().Content.ReadAsAsync<T>(Cancel);
             //if (response.IsSuccessStatusCode)
             //    return await response.Content.ReadAsAsync<T>(Cancel);
@@ -41,9 +42,9 @@ namespace WebStore.Clients.Base
 
         protected HttpResponseMessage Post<T>(string url, T item) => PostAsync(url, item).Result;
 
-        protected async Task<HttpResponseMessage> PostAsync<T>(string url,T item, CancellationToken Cancel = default)
+        protected async Task<HttpResponseMessage> PostAsync<T>(string url, T item, CancellationToken Cancel = default)
         {
-            var response = await _Client.PostAsJsonAsync(url, item,Cancel);
+            var response = await _Client.PostAsJsonAsync(url, item, Cancel);
             return response.EnsureSuccessStatusCode();
         }
 
@@ -51,7 +52,7 @@ namespace WebStore.Clients.Base
 
         protected async Task<HttpResponseMessage> PutAsync<T>(string url, T item, CancellationToken Cancel = default)
         {
-            var response = await _Client.PostAsJsonAsync(url, item,Cancel);
+            var response = await _Client.PutAsJsonAsync(url, item, Cancel);
             return response.EnsureSuccessStatusCode();
         }
 
@@ -59,10 +60,11 @@ namespace WebStore.Clients.Base
 
         protected async Task<HttpResponseMessage> DeleteAsync(string url, CancellationToken Cancel = default)
         {
-            return await _Client.DeleteAsync(url,Cancel);
+            return await _Client.DeleteAsync(url, Cancel);
         }
 
         //~BaseClient() => Dispose(false);
+
         public void Dispose()
         {
             Dispose(true);
@@ -72,7 +74,7 @@ namespace WebStore.Clients.Base
         private bool _Disposed;
         protected virtual void Dispose(bool Disposing)
         {
-            if(_Disposed||!Disposing) return;
+            if (_Disposed || !Disposing) return;
 
             _Disposed = true;
             _Client.Dispose();

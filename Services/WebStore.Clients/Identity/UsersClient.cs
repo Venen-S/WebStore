@@ -15,15 +15,13 @@ using WebStore.Interfaces.Services;
 
 namespace WebStore.Clients.Identity
 {
-    public class UsersClient:BaseClient,IUserClient
+    public class UsersClient : BaseClient, IUserClient
     {
-        private ILogger<UsersClient> _Logger;
+        private readonly ILogger<UsersClient> _Logger;
 
-        public UsersClient(IConfiguration Configuration, ILogger<UsersClient> Logger) : 
-            base(Configuration, WebAPI.Identity.Users)
-        {
+        public UsersClient(IConfiguration Configuration, ILogger<UsersClient> Logger) : base(Configuration, WebAPI.Identity.Users) =>
             _Logger = Logger;
-        }
+
         #region Implementation of IUserStore<User>
 
         public async Task<string> GetUserIdAsync(User user, CancellationToken cancel)

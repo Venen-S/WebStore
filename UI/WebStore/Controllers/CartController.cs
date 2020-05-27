@@ -52,18 +52,20 @@ namespace WebStore.Controllers
                     CartViewModel = _CartService.TransformFromCart(),
                     OrderViewModel = Model
                 });
+
             var order_model = new CreateOrderModel
             {
                 OrderViewModel = Model,
                 OrderItems = _CartService.TransformFromCart().Items
-                    .Select(item=>new OrderItemDTO
-                    {
-                        Id=item.Key.Id,
-                        Price = item.Key.Price,
-                        Quantity = item.Value
-                    })
-                    .ToList()
+                   .Select(item => new OrderItemDTO
+                   {
+                       Id = item.Key.Id,
+                       Price = item.Key.Price,
+                       Quantity = item.Value
+                   })
+                   .ToList()
             };
+
             var order = await OrderService.CreateOrderAsync(User.Identity.Name, order_model);
 
             _CartService.RemoveAll();

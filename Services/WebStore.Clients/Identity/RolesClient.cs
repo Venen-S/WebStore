@@ -10,11 +10,10 @@ using WebStore.Interfaces.Services;
 
 namespace WebStore.Clients.Identity
 {
-    public class RolesClient:BaseClient,IRolesClient
+    public class RolesClient : BaseClient, IRolesClient
     {
-        public RolesClient(IConfiguration Configuration) : base(Configuration, WebAPI.Identity.Roles)
-        {
-        }
+        public RolesClient(IConfiguration Configuration) : base(Configuration, WebAPI.Identity.Roles) { }
+
         #region IRoleStore<Role>
 
         public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancel) =>
