@@ -19,21 +19,24 @@ namespace WebStore.Tests.Controllers
     public class CartControllerTests
     {
         [TestMethod]
-        public void CheckOut_ModelState_Invalid_Returns_ViewModel()
+        public async Task CheckOut_ModelState_Invalid_Returns_ViewModel()
         {
             var cart_service_mock = new Mock<ICartService>();
-            var order_service=new Mock<IOrderService>();
+            var order_service = new Mock<IOrderService>();
+
             var controller = new CartController(cart_service_mock.Object);
-            controller.ModelState.AddModelError("error","InvalidModel");
+
+            controller.ModelState.AddModelError("error", "InvalidModel");
+
             const string expected_model_name = "Test order";
-            var result=controller.CheckOut(
-                new OrderViewModel
-                {
-                    Name = expected_model_name
-                },
+
+            var result = await controller.CheckOut(
+                new OrderViewModel { Name = expected_model_name },
                 order_service.Object);
+
             var view_result = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<CartOrderViewModel>(view_result.Model);
+
             Assert.Equal(expected_model_name, model.OrderViewModel.Name);
         }
 
