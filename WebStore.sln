@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Service", ".Service", "{1A
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C72EBC1F-1B36-4B1D-820E-F57118EB920C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Tests", "Tests\WebStore.Tests\WebStore.Tests.csproj", "{E98A6DF1-8FF3-4240-A6B5-083C5485D422}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,10 @@ Global
 		{F8CCF809-6533-4AB0-9759-9D05B58FCDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8CCF809-6533-4AB0-9759-9D05B58FCDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8CCF809-6533-4AB0-9759-9D05B58FCDC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98A6DF1-8FF3-4240-A6B5-083C5485D422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98A6DF1-8FF3-4240-A6B5-083C5485D422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98A6DF1-8FF3-4240-A6B5-083C5485D422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98A6DF1-8FF3-4240-A6B5-083C5485D422}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +89,7 @@ Global
 		{801A0DE6-E1C6-43DE-BCCD-C9461C40FBEE} = {4CC3A3BB-B68F-4834-A0EF-6D4DB2698631}
 		{43DE2DF2-F463-49AD-838F-50452CE1FB80} = {4CC3A3BB-B68F-4834-A0EF-6D4DB2698631}
 		{F8CCF809-6533-4AB0-9759-9D05B58FCDC7} = {D9319E48-B0E2-4543-A915-FF7BEAB21BD3}
+		{E98A6DF1-8FF3-4240-A6B5-083C5485D422} = {C72EBC1F-1B36-4B1D-820E-F57118EB920C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {918D1B74-7098-4C83-960C-290F3B4FF3EC}
