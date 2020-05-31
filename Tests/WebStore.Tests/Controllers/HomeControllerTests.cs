@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebStore.Controllers;
 using Assert=Xunit.Assert;
@@ -53,6 +54,33 @@ namespace WebStore.Tests.Controllers
             var controller = new HomeController();
             var result = controller.ContactUs();
             Assert.IsType<ViewResult>(result);
+        }
+        [TestMethod, ExpectedException(typeof(ApplicationException))]
+        public void Throw_throw_ApplicationException_With_Message()
+        {
+            var controller=new HomeController();
+            var result = controller.Throw(string.Empty);
+        }
+        [TestMethod]
+        public void Throw_throw_ApplicationException_with_Message()
+        {
+            var controller = new HomeController();
+            const string expected_message_text = "Message!";
+            var exception = Assert.Throws<ApplicationException>(() =>
+                controller.Throw(expected_message_text));
+            Assert.Equal(expected_message_text, exception.Message);
+        }
+
+        [TestMethod]
+        public void ErrorStatus_404_RedirectTo_Error404()
+        {
+            var controller=new HomeController();
+            const string status404 = "404";
+            var result=controller.ErrorStatus(status404);
+            //Assert.NotNull(result);
+            var redirect_to_action = Assert.IsType<RedirectToActionResult>(result);
+            Assert.NotNull(redirect_to_action.ControllerName);
+            Assert.Equal(nameof(HomeController.Error404), redirect_to_action.ActionName);
         }
     }
 }
