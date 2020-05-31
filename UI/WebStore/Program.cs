@@ -10,6 +10,10 @@ using Serilog.Formatting.Json;
 
 namespace WebStore
 {
+    // dotnet restore
+    // dotnet build --no-restore
+    // dotnet test --no-build
+    // dotnet publish
     public class Program
     {
         public static void Main(string[] args) =>
