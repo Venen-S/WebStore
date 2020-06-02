@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WebStore.Controllers;
 using WebStore.Interfaces.Api;
-using Xunit.Sdk;
 using Assert=Xunit.Assert;
 
 namespace WebStore.Tests.Controllers
