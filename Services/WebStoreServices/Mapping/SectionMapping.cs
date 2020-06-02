@@ -1,4 +1,6 @@
-﻿using WebStore.Domain.DTO.Products;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WebStore.Domain.DTO.Products;
 using WebStore.Domain.Entities;
 
 namespace WebStoreServices.Mapping
@@ -11,6 +13,8 @@ namespace WebStoreServices.Mapping
             {
                 Id = Section.Id,
                 Name = Section.Name,
+                Order = Section.Order,
+                ParentId = Section.ParentId
             };
 
         public static Section FromDTO(this SectionDTO Section) => Section is null
@@ -19,6 +23,10 @@ namespace WebStoreServices.Mapping
             {
                 Id = Section.Id,
                 Name = Section.Name,
+                Order = Section.Order,
+                ParentId = Section.ParentId
             };
+
+        public static IEnumerable<SectionDTO> ToDTO(this IEnumerable<Section> Sections) => Sections?.Select(ToDTO);
     }
 }

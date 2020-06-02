@@ -15,13 +15,19 @@ namespace WebStoreServices.Products.InSQL
 
         public SqlProductData(WebStoreDB db) => _db = db;
 
-        public IEnumerable<Section> GetSections() => _db.Sections
-           //.Include(section => section.Products)
-           .AsEnumerable();
+        public IEnumerable<SectionDTO> GetSections() => _db.Sections
+            //.Include(section => section.Products)
+            .AsEnumerable()
+            .ToDTO();
 
-        public IEnumerable<Brand> GetBrands() => _db.Brands
-           //.Include(brand => brand.Products)
-           .AsEnumerable();
+        public SectionDTO GetSectionById(int id) => _db.Sections.FirstOrDefault(x => x.Id == id).ToDTO();
+
+        public IEnumerable<BrandDTO> GetBrands() => _db.Brands
+            //.Include(brand => brand.Products)
+            .AsEnumerable()
+            .ToDTO();
+
+        public BrandDTO GetBrandById(int id) => _db.Brands.FirstOrDefault(x => x.Id == id).ToDTO();
 
         public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null)
         {
