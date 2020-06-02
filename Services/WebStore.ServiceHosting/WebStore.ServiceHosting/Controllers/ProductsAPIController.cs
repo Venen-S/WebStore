@@ -17,8 +17,17 @@ namespace WebStore.ServiceHosting.Controllers
         {
             _ProductData = ProductData;
         }
+        [HttpGet("sections/{id}")]
+        public SectionDTO GetSectionById(int id)=> _ProductData.GetSectionById(id);
+        
+
         [HttpGet("brands")]
-        public IEnumerable<Brand> GetBrands() => _ProductData.GetBrands();
+        public IEnumerable<BrandDTO> GetBrands() => _ProductData.GetBrands();
+
+        [HttpGet("brands/{id}")]
+        public BrandDTO GetBrandById(int id)=>_ProductData.GetBrandById(id);
+        
+
         [HttpGet("{id}")]
         public ProductDTO GetProductById(int id) => _ProductData.GetProductById(id);
 
@@ -26,6 +35,6 @@ namespace WebStore.ServiceHosting.Controllers
         public IEnumerable<ProductDTO> GetProducts([FromBody] ProductFilter Filter = null) => _ProductData.GetProducts(Filter);
 
         [HttpGet("sections")]
-        public IEnumerable<Section> GetSections() => _ProductData.GetSections();
+        public IEnumerable<SectionDTO> GetSections() => _ProductData.GetSections();
     }
 }
