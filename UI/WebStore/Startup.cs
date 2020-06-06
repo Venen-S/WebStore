@@ -86,6 +86,7 @@ namespace WebStore
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
@@ -102,13 +103,14 @@ namespace WebStore
             //db.Initialize();
             log.AddLog4Net();
 
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseBrowserLink();
             }
 
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
@@ -116,11 +118,15 @@ namespace WebStore
 
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<InformationHub>("/info");
+
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("blazor.html");
 
                 endpoints.MapGet("/greetings", async context =>
                 {
