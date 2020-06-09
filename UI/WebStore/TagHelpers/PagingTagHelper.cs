@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -48,7 +49,11 @@ namespace WebStore.TagHelpers
             else
             {
                 PageUrlValues["page"] = PageNumber;
-                a.Attributes["href"] = Url.Action(PageAction, PageUrlValues);
+                a.Attributes["href"] = "#"; //Url.Action(PageAction, PageUrlValues);
+                foreach (var (key, value) in PageUrlValues.Where(p=>p.Value!=null))
+                {
+                    a.MergeAttribute($"data-{key}",value.ToString());
+                }
             }
 
             a.InnerHtml.AppendHtml(PageNumber.ToString());

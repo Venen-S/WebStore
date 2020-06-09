@@ -13,6 +13,7 @@ using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
@@ -30,6 +31,8 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             //services.AddDbContext<WebStoreDB>(opt =>
             //    opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddTransient<WebStoreDBInitializer>();
@@ -83,6 +86,7 @@ namespace WebStore
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
@@ -99,13 +103,14 @@ namespace WebStore
             //db.Initialize();
             log.AddLog4Net();
 
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseBrowserLink();
             }
 
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
@@ -113,10 +118,16 @@ namespace WebStore
 
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<InformationHub>("/info");
+
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("blazor.html");
+
                 endpoints.MapGet("/greetings", async context =>
                 {
                     await context.Response.WriteAsync(Configuration["CustomGreetings"]);
